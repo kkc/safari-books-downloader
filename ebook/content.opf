@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf"
+         version="3.0"
+         unique-identifier="BookId"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xml:lang="en"
+         xmlns:media="http://www.idpf.org/epub/vocab/overlays/#"
+         prefix="ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
+
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/"
+              xmlns:opf="http://www.idpf.org/2007/opf">
+
+        <dc:identifier id="BookId">9781449317904</dc:identifier>
+        <meta refines="#BookId" property="identifier-type" scheme="onix:codelist5">22</meta>
+        <meta property="dcterms:identifier" id="meta-identifier">BookId</meta>
+        <dc:title>REST API Design Rulebook</dc:title>
+        <meta property="dcterms:title" id="meta-title">REST API Design Rulebook</meta>
+        <dc:language>en</dc:language>
+        <meta property="dcterms:language" id="meta-language">en</meta>
+        <meta property="dcterms:modified">2018-04-12T13:48:12+0000Z</meta>
+        <dc:creator id="creator">Mark Masse</dc:creator>
+        <meta refines="#creator" property="file-as">Mark Masse</meta>
+        <meta property="dcterms:publisher">O'Reilly Media, Inc.</meta>
+        <dc:publisher>O'Reilly Media, Inc.</dc:publisher>
+
+        <meta property="dcterms:date">2018-04-12</meta>
+        <dc:date>2018-04-12</dc:date>
+        <meta property="dcterms:rights">All rights reserved</meta>
+        <dc:rights>Copyright &#x00A9; 2018 by O'Reilly Media, Inc.</dc:rights>
+        <meta name="cover" content="image_cover"/>
+        <meta name="generator" content="epub-nicohaenggi" />
+        <meta property="ibooks:specified-fonts">true</meta>
+
+    </metadata>
+
+    <manifest>
+        <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+        <item id="css" href="style.css" media-type="text/css" />
+        <item id="css" href="core.css" media-type="text/css" />
+
+        <item id="image_cover" href="images/cover.jpg" media-type="image/jpg" />
+
+        
+        <item id="image_0" href="images/httpatomoreillycomsourceoreillyimages926284.jpg" media-type="image/png" />
+        
+        <item id="image_1" href="images/1.png" media-type="image/png" />
+        
+        <item id="image_2" href="images/2.png" media-type="image/png" />
+        
+        <item id="image_3" href="images/3.png" media-type="image/png" />
+        
+        <item id="image_4" href="images/4.png" media-type="image/png" />
+        
+        <item id="image_5" href="images/5.png" media-type="image/png" />
+        
+        <item id="image_6" href="images/6.png" media-type="image/png" />
+        
+        <item id="image_7" href="images/7.png" media-type="image/png" />
+        
+
+        
+        <item id="tocxhtmlfile" href="cover.html" media-type="application/xhtml+xml" />
+        
+        <item id="id2604964" href="ch05s03.html" media-type="application/xhtml+xml" />
+        
+
+    </manifest>
+
+    <spine toc="ncx">
+        <itemref idref="tocxhtmlfile"/><itemref idref="id2604964"/>
+
+    </spine>
+    <guide>
+      <reference type="text" title="Table of Content" href="cover.html"/>
+    </guide>
+</package>
