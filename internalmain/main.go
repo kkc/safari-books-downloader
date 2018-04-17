@@ -7,6 +7,7 @@ import (
 	"github.com/kkc/safari-books-downloader/safari"
 
 	"github.com/kkc/safari-books-downloader/ebook"
+	"github.com/kkc/safari-books-downloader/utils"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -75,7 +76,8 @@ func DownloadSafariBook(cmd *cobra.Command, args []string) {
 		password = viper.GetString("safari.password")
 	}
 	safari := safari.NewSafari()
-	result := safari.FetchBookById(bookid, username, password)
+	result, err := safari.FetchBookById(bookid, username, password)
+	utils.StopOnErr(err)
 	ebook := ebook.NewEbook(result)
 	ebook.Save(output)
 }

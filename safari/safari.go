@@ -11,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	logrus "github.com/Sirupsen/logrus"
 )
 
 type ChapterMeta struct {
@@ -203,14 +205,27 @@ func (s *Safari) adjustOrderByChapterNumber(chapters map[int]Chapter) ([]Chapter
 	return chapters_slice, nil
 }
 
-func (s *Safari) FetchBookById(id string, username string, password string) []byte {
+// Get result by using book id
+func (s *Safari) FetchBookById(id string, username string, password string) ([]byte, error) {
 	// check input format
 
-	_ = s.authorizeUser(username, password)
-	_ = s.fetchMeta(id)
+	err := s.authorizeUser(username, password)
+	if err != nil {
+		return nil, err
+	}
+	err = s.fetchMeta(id)
+	if err != nil {
+		return nil, err
+	}
 	_ = s.fetchTOC(id)
-	_ = s.fetchChapters(id)
-	_ = s.fetchStylesheet(id)
+	err = s.fetchChapters(id)
+	if err != nil {
+		return nil, err
+	}
+	err = s.fetchStylesheet(id)
+	if err != nil {
+		return nil, err
+	}
 
 	var author []string
 	for _, a := range s.books[id].meta.Authors {
@@ -222,7 +237,10 @@ func (s *Safari) FetchBookById(id string, username string, password string) []by
 		publisher = append(publisher, p.Name)
 	}
 
-	chapters, _ := s.adjustOrderByChapterNumber(s.books[id].chapters)
+	chapters, err := s.adjustOrderByChapterNumber(s.books[id].chapters)
+	if err != nil {
+		return nil, err
+	}
 
 	response := &jsonBook{
 		Title:       s.books[id].meta.Title,
@@ -238,11 +256,9 @@ func (s *Safari) FetchBookById(id string, username string, password string) []by
 
 	data, err := json.Marshal(response)
 	if err != nil {
-		fmt.Println("error:", err)
+		return nil, err
 	}
-	//d, _ := prettyprint(data)
-	//fmt.Printf("%s", d)
-	return data
+	return data, nil
 }
 
 type AuthResponse struct {
@@ -253,6 +269,7 @@ type AuthResponse struct {
 	Scope        string `json:"scope"`
 }
 
+// Login safari and get the access token
 func (s *Safari) authorizeUser(username string, password string) error {
 	// http request
 	uri := s.baseUrl + "/oauth2/access_token/"
@@ -265,18 +282,23 @@ func (s *Safari) authorizeUser(username string, password string) error {
 	}
 	resp, err := http.PostForm(uri, form)
 	if err != nil {
-		fmt.Println("errorination happened getting the response", err)
 		return err
 	}
-	fmt.Println("login successfully")
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		return errors.New("Login fail, please double check your username and password")
+	}
+
+	logrus.Info("login successfully")
 	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 
 	var stuff AuthResponse
 	err = json.Unmarshal(body, &stuff)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -284,28 +306,31 @@ func (s *Safari) authorizeUser(username string, password string) error {
 	return nil
 }
 
+// Fetch safari resources by given url
 func (s *Safari) fetchResource(url string) (string, error) {
 	uri := s.baseUrl + "/" + url
 
-	fmt.Println("fetch uri " + uri + "with token " + s.accessToken)
+	logrus.Info("fetch uri " + uri + " with token " + s.accessToken)
 	req, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
-		fmt.Println("errorination happened getting the response", err)
-		return "", err
+		return nil, err
 	}
 	req.Header.Set("Authorization", "Bearer "+s.accessToken)
 	client := &http.Client{}
 	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		err = errors.New("Error: status code != 200, actual status code '" + resp.Status + "'")
-		return "", err
+		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	return string(body), nil
