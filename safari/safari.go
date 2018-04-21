@@ -313,24 +313,24 @@ func (s *Safari) fetchResource(url string) (string, error) {
 	logrus.Info("fetch uri " + uri + " with token " + s.accessToken)
 	req, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	req.Header.Set("Authorization", "Bearer "+s.accessToken)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		err = errors.New("Error: status code != 200, actual status code '" + resp.Status + "'")
-		return nil, err
+		return "", err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	return string(body), nil
