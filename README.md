@@ -8,7 +8,7 @@ This project mimics https://github.com/nicohaenggi/SafariBooks-Downloader by usi
 # Installation
 
 ```
-go get -d https://github.com/kkc/safari-books-downloader
+go get -d github.com/kkc/safari-books-downloader
 cd ${GOPATH:-$HOME/go}/src/github.com/kkc/safari-books-downloader
 go build -o safari-downloader
 ```
