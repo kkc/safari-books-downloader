@@ -37,7 +37,8 @@
     <manifest>
         <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
         <item id="css" href="style.css" media-type="text/css" />
-        <item id="css" href="core.css" media-type="text/css" />
+        {{ if ne .Stylesheet "" }}
+        <item id="css" href="core.css" media-type="text/css" />{{ end }}
 
         <item id="image_cover" href="images/cover.jpg" media-type="image/jpg" />
 
@@ -55,6 +56,6 @@
 
     </spine>
     <guide>
-      <reference type="text" title="Table of Content" href="cover.html"/>
+        <reference type="text" title="Table of Content" href="{{ (index .Chapters 1).Filename }}"/>
     </guide>
 </package>
