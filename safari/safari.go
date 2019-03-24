@@ -337,7 +337,7 @@ func (s *Safari) fetchResource(url string) (string, error) {
 }
 
 func (s *Safari) fetchMeta(id string) error {
-	url := "/api/v1/book/" + id
+	url := "api/v1/book/" + id
 	body, err := s.fetchResource(url)
 	if err != nil {
 		fmt.Println(err)
@@ -375,7 +375,7 @@ type TocContent struct {
 }
 
 func (s *Safari) fetchTOC(id string) *map[string]TocContent {
-	url := "/api/v1/book/" + id + "/flat-toc/"
+	url := "api/v1/book/" + id + "/flat-toc/"
 	body, err := s.fetchResource(url)
 	if err != nil {
 		fmt.Println(err)
